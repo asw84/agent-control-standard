@@ -81,6 +81,7 @@
  *     wherever the failure was caught, not something re-inferred afterwards
  *     from leftover variables.
  */
+import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import {
   createAuditSink,
@@ -494,7 +495,7 @@ async function main(): Promise<void> {
   let hookEventName: string;
   let sessionId: string;
   try {
-    payload = JSON.parse(await Bun.stdin.text()) as Record<string, unknown>;
+    payload = JSON.parse(readFileSync(0, "utf8")) as Record<string, unknown>;
     if (typeof payload?.hook_event_name !== "string") {
       throw new Error('acs-hook: stdin payload is missing a string "hook_event_name" field');
     }
